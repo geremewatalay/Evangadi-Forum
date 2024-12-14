@@ -10,6 +10,12 @@ const dbConnection = require("./db/dbConfig")
 //user routers middleware file
 const userRoutes = require("./routes/userRoute")
 
+
+//json middleware to extract json data
+
+app.use(express.json())
+
+
 //user routes middleware
 app.use("/api/users",userRoutes)
 
