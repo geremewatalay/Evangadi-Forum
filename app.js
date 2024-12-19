@@ -10,7 +10,10 @@ const dbConnection = require("./db/dbConfig")
 //user routers middleware file
 const userRoutes = require("./routes/userRoute")
 
-
+//question routes middleware file
+const questionsRoutes = require("./routes/questionRoute"); 
+//authenthication middleware file
+const authMiddleware = require('./middleware/authMiddleware');
 //json middleware to extract json data
 
 app.use(express.json())
@@ -20,6 +23,7 @@ app.use(express.json())
 app.use("/api/users",userRoutes)
 
 // questions routes middleware
+app.use("/api/questions",authMiddleware,questionsRoutes)
 
 //answers routes middleware
 async function start() {
