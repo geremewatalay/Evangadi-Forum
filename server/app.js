@@ -1,7 +1,15 @@
+require("dotenv").config()
 const express = require('express');
 const app = express();
 const port = 5000
 
+const cors = require("cors")
+
+app.use(cors({
+    origin: 'http://localhost:5173', // Allow frontend from localhost:5173
+    methods: 'GET,POST,PUT,DELETE', // Allow specific HTTP methods
+    allowedHeaders: 'Content-Type,Authorization', // Allow specific headers
+  }));
 
 //db connection
 const dbConnection = require("./db/dbConfig")

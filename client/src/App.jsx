@@ -1,14 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import React, { useEffect, useState, createContext} from 'react';
+import { data, Route, Routes, useNavigate } from 'react-router-dom';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import axios from './axiosConfig';
 
+
+export const AppState = createContext()
 function App() {
-  const [count, setCount] = useState(0)
+  const[user, setUser] = useState([]);
+  const token = localStorage.getItem('token');
+  const navigate = useNavigate();
 
-  return (
-    <>
-      <h1>Test</h1>
-    </>
-  )
+
+async function checkUser() {
+  try {
+    await axios.get('/users/check',{
+      headers:{ 
+         Authorization:'Bearer' + token,
+      },
+    });
+    
+    setUser(data);
+  } catch (error) {
+    console.log(error.response)
+    navigate('/login');
+    
+  }
 }
 
-export default App
+useEffect(()=>{
+checkUser();
+}, []);
+
+
+  return (
+    <AppState.Provider value={{user, setUser}}>
+      <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/login' element={<Login />} />
+      <Route path='/register' element={<Register />} />
+    </Routes>
+    </AppState.Provider>
+    
+  );
+}
+
+export default App;
